@@ -1,0 +1,37 @@
+% Newton's algorithm
+function [x,iter,array] = nm(A,b,x0,max_iter)
+    array = [x0];
+    x = x0;
+    fprintf('x0 = ');
+    fprintf('%10.6f',x);
+    fprintf('\n');
+    eps = 1.0e-7;
+    [D,L] = md(A);
+    for k=0:max_iter
+        y = L^(-1)*(b-A*x);
+        z = D^(-1)*y;
+        d = L'^(-1)*z;
+        alpha = (b-A*x)'*d/(d'*A*d);
+        xx = x + alpha*d;
+        error = norm(alpha*d,2);
+        if norm(xx-x,2) <= eps
+            fprintf('\nFind the minimizer!');
+            iter = k;
+            fprintf('\nx%d = ',iter);
+            array = [array x];
+            fprintf('%10.6f',x);
+            fprintf('\n');
+            fprintf('error = ');
+            fprintf('%10.6f',error);
+            fprintf('\n\n');
+            return
+        end        
+        x = xx;
+        array = [array x];  % store the new x in the array
+        fprintf('x%d = ',k+1);
+        fprintf('%10.6f',x);
+        fprintf('\n');
+    end
+    iter = max_iter;
+    return
+end
