@@ -1,0 +1,35 @@
+% steepest descent algorithm
+function [x,iter,array] = sd(A,b,x0,max_iter)
+    array = [x0]; 
+    x = x0;
+    fprintf('x0 = ');
+    fprintf('%10.6f',x);
+    fprintf('\n');
+    eps = 1.0e-7;
+    for k=0:max_iter  
+        g=A*x-b;
+        d=-g;
+        alpha=(g*g')/(d'*A*d);
+        xx=x+alpha*d;
+        error = norm(xx-x,2);
+        if norm(xx-x,2) <= eps
+            fprintf('\nFind the minimizer!');
+            iter = k;
+            fprintf('\nx%d = ',iter);
+            array=[array x];
+            fprintf('%10.6f',x);
+            fprintf('\n');
+            fprintf('error = ');
+            fprintf('%10.6f ',error);
+            fprintf('\n\n');
+            return 
+        end
+    x=xx;
+    array=[array x]; % store the new x in the array
+    fprintf('x%d = ',k+1);
+    fprintf('% 10.6f',x);
+    fprintf('\n');
+    end
+    iter = max_iter;
+    return
+end
