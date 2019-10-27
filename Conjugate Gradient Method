@@ -1,0 +1,43 @@
+% conjugate gradient method
+function [x,iter,array] = cgm(A,b,x0,max_iter)
+    array=[x0];
+    x=x0;
+    eps=1.0e-7;
+    fprintf('x0 = ');
+    fprintf('%10.6f',x0);
+    fprintf('\n');
+    r=b-A*x;
+    d=r;
+    for k=0:max_iter
+        alpha=(r'*r)/(d'*A*d);
+        xx=x+alpha*d;
+        rr=b-A*xx;
+        error = norm(xx-x,2);
+%         if (norm(rr,2)/norm(b,2))<= eps  
+          if error <=eps
+            fprintf('\nFind the minimizer!');
+            iter = k;
+            error = norm(xx-x,2);
+            x=xx;
+            r=rr;
+            fprintf('\nx%d = ',iter);
+            array = [array x];
+            fprintf('%10.6f',x);
+            fprintf('\n');
+            fprintf('error = ');
+            fprintf('%10.6f',error);
+            fprintf('\n\n');      
+            return
+        end
+        beta=(rr'*rr)/(r'*r);
+        d=rr+beta*d;
+        x=xx;
+        r=rr;
+        array = [array x]; % store the new x in the array
+        fprintf('x%d = ',k+1);
+        fprintf('%10.6f',x);
+        fprintf('\n');
+    end
+    iter = max_iter;
+    return 
+end
