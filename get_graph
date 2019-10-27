@@ -1,0 +1,12 @@
+% convert the return values of the functions into the data of each coordinate
+function [x,y] = get_graph(min,iter,array)
+    error = [];      
+    for k=1:iter+1 
+        error = [error array(:,k)-min]; % error is a matrix with each column of the x minus minimizer 
+    end
+    y=[];            
+    for k=1:iter+1
+        y = [y norm(error(:,k),2)];   % vertical ordinate, the Euclid distances between x and the minimizer
+    end
+    x=[1:1:iter+1];   %  horizontal ordinate, the number of iteration
+end
